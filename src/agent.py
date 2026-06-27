@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 
@@ -16,7 +17,7 @@ from livekit.agents import (
 )
 from livekit.plugins import ai_coustics
 
-from challenges import InterviewChallenge, select_challenge_from_env
+from challenges import InterviewChallenge, get_challenge, select_challenge_from_env
 from coding_workspace import (
     CandidateWorkspace,
     prepare_candidate_workspace,
@@ -43,6 +44,20 @@ RESET_WORKSPACE = os.getenv("INTERVIEWROOM_RESET_WORKSPACE", "").lower() in {
     "true",
     "yes",
 }
+
+
+def select_challenge_for_job(ctx: JobContext) -> InterviewChallenge:
+    if ctx.job.metadata:
+        try:
+            metadata = json.loads(ctx.job.metadata)
+        except json.JSONDecodeError:
+            logger.warning("Ignoring invalid agent job metadata: %s", ctx.job.metadata)
+        else:
+            challenge_id = metadata.get("challenge_id")
+            if challenge_id:
+                return get_challenge(challenge_id)
+
+    return select_challenge_from_env()
 
 
 class Interviewer(Agent):
@@ -135,7 +150,7 @@ server = AgentServer()
 
 @server.rtc_session(agent_name=AGENT_NAME)
 async def interview_room_agent(ctx: JobContext):
-    challenge = select_challenge_from_env()
+    challenge = select_challenge_for_job(ctx)
     workspace = prepare_candidate_workspace(challenge, reset=RESET_WORKSPACE)
     ctx.log_context_fields = {
         "room": ctx.room.name,

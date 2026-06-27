@@ -2,7 +2,7 @@
 
 InterviewRoom is a LiveKit-powered mock software interview coach for students preparing for technical interviews.
 
-The student joins a realtime interview room, speaks with an AI interviewer, shares their screen while coding, and receives structured feedback afterward. The goal is not just to give students more coding problems, but to help them practice the live interview behaviors that are hard to train alone: thinking out loud, asking clarifying questions, handling hints, explaining tradeoffs, testing edge cases, and recovering when stuck.
+The student joins a realtime interview room, speaks with an AI interviewer, codes in a local workspace the agent can inspect, and receives structured feedback afterward. The goal is not just to give students more coding problems, but to help them practice the live interview behaviors that are hard to train alone: thinking out loud, asking clarifying questions, handling hints, explaining tradeoffs, testing edge cases, and recovering when stuck.
 
 ## Prototype
 
@@ -12,6 +12,7 @@ This repo now contains a first LiveKit Agents prototype for the hackathon:
 - `src/interview.py`: InterviewRoom prompt, opening message, and rubric.
 - `src/challenges.py` and `src/challenges/local.json`: Local challenge catalog and selector.
 - `src/coding_workspace.py`: Local Python workspace setup, code inspection, and test runner.
+- `src/web_app.py` and `src/web_static/`: Local browser interview room for LiveKit Cloud demos.
 - `candidate_workspace/`: Generated local coding folders for candidate solutions.
 - `tests/test_interview.py`: Fast local tests for the prototype behavior.
 - `Dockerfile`: Starter deployment container from the LiveKit Python agent template.
@@ -60,6 +61,28 @@ Run the agent for LiveKit Agent Console or a frontend:
 uv run python src/agent.py dev
 ```
 
+Run the local browser interview room in a second terminal:
+
+```bash
+uv run python src/web_app.py
+```
+
+Open:
+
+```text
+http://localhost:8765
+```
+
+The web page creates a LiveKit Cloud room, generates a short-lived participant token on the local Python server, dispatches the local agent into the room, and lets the candidate use their microphone from the browser. After the session starts, the solution link opens the generated `solution.py` file through VS Code's URL handler when VS Code is installed.
+
+For a shareable hackathon demo link, keep the agent and web server running locally, then put the web server behind an HTTPS tunnel such as ngrok or cloudflared:
+
+```bash
+INTERVIEWROOM_WEB_HOST=0.0.0.0 uv run python src/web_app.py
+```
+
+Then point the tunnel at port `8765` and share the HTTPS URL. Browser microphone access works on `localhost` or HTTPS origins; a plain LAN `http://<your-ip>:8765` URL may not get device permissions.
+
 Run tests:
 
 ```bash
@@ -104,9 +127,9 @@ Supported filters are:
 
 ### Current Scope
 
-This prototype supports realtime voice through LiveKit and gives the candidate screen-sharing instructions. For coding challenges with local test specs, it also creates a local `candidate_workspace/<challenge-id>/solution.py` file. The interviewer can inspect that file and run local tests when the candidate asks for a check or reaches a debugging checkpoint.
+This prototype supports realtime voice through LiveKit and gives the candidate a local browser room for starting the interview. For coding challenges with local test specs, it also creates a local `candidate_workspace/<challenge-id>/solution.py` file. The interviewer can inspect that file and run local tests when the candidate asks for a check or reaches a debugging checkpoint.
 
-It does not yet stream live editor state from a web frontend or analyze screen pixels. A browser-based editor with LiveKit data events is the natural next step.
+When the page is shared through a tunnel, remote candidates can join the room and speak with the interviewer. The code-inspection and test-running tools still read the host machine's local `candidate_workspace`, so a browser-based editor with LiveKit data events is the natural next step for fully remote coding.
 
 ### Local Coding Loop
 
@@ -156,7 +179,7 @@ Most solo practice tools evaluate only the final answer. InterviewRoom evaluates
 InterviewRoom simulates a company-style software interview using:
 
 - Live voice conversation with an AI interviewer.
-- Screen sharing so the interviewer can follow the candidate's coding process.
+- A local coding workspace the interviewer can inspect and test during the conversation.
 - Publicly available or original coding challenges inspired by common interview patterns.
 - Company-style interviewer personas, such as large tech, startup, backend, frontend, or behavioral interview styles.
 - A post-interview scorecard with concrete feedback and a study plan.
@@ -170,13 +193,12 @@ InterviewRoom simulates a company-style software interview using:
 
 ## LiveKit Fit
 
-LiveKit is central to the product because the experience depends on realtime voice, video, and screen sharing.
+LiveKit is central to the product because the experience depends on realtime voice, room orchestration, and low-latency agent participation.
 
 LiveKit can power:
 
 - Interview rooms with the student and AI interviewer as participants.
 - Low-latency voice interaction.
-- Screen sharing from the student's IDE or browser.
 - Agent participation in a live room.
 - Session recording or transcript generation for later review.
 - Future human handoff, group practice, or mentor review flows.
@@ -203,11 +225,11 @@ For the first demo, we can narrow this to:
 
 ### 2. Live Interview Room
 
-The student enters a LiveKit room and shares:
+The student enters a LiveKit room and uses:
 
 - Microphone.
 - Camera, optional.
-- Screen, showing their code editor or browser.
+- The generated local coding workspace.
 
 The AI interviewer begins with a realistic opening:
 
@@ -276,7 +298,7 @@ The feedback should include:
 2. Select "New Grad Coding Interview" and "Large Tech Style".
 3. Join the LiveKit interview room.
 4. The AI interviewer greets the student and gives a coding challenge.
-5. The student shares their screen and starts solving.
+5. The student opens the generated solution file and starts solving.
 6. The interviewer asks follow-up questions and gives one small hint.
 7. The student explains complexity and tests edge cases.
 8. The session ends with a scorecard and personalized practice plan.
@@ -286,7 +308,7 @@ The feedback should include:
 ### Frontend
 
 - Web app for interview setup and room entry.
-- LiveKit client for voice, camera, and screen share.
+- LiveKit client for realtime voice.
 - Interview dashboard with problem statement, timer, and session status.
 - Post-interview feedback page.
 
@@ -302,7 +324,7 @@ The feedback should include:
 
 - Joins the LiveKit room as the interviewer.
 - Listens to the student in realtime.
-- Optionally receives screen frames or editor state.
+- Inspects the generated solution file and runs local tests through tools.
 - Uses a structured interviewer prompt.
 - Calls tools to load the selected challenge, track rubric events, and generate final feedback.
 
@@ -324,7 +346,7 @@ The product should not be positioned as another coding challenge platform.
 
 The differentiator is:
 
-> Realistic realtime interview practice with voice, screen sharing, interviewer pressure, and feedback on the candidate's process.
+> Realistic realtime interview practice with voice, live coding feedback, interviewer pressure, and feedback on the candidate's process.
 
 ## Stretch Goals
 
@@ -336,7 +358,7 @@ The differentiator is:
 - Compare multiple attempts over time.
 - Generate a weekly practice plan.
 - Support pair interviews or group practice rooms.
-- Add an embedded code editor for easier screen-aware evaluation.
+- Add an embedded code editor for fully remote coding sessions.
 
 ## Risks and Constraints
 

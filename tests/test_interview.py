@@ -46,7 +46,8 @@ def test_interviewer_instructions_keep_candidate_driving() -> None:
 
     assert "Ask one question at a time." in instructions
     assert "Do not provide the final algorithm or full solution" in instructions
-    assert "This prototype does not analyze screen pixels directly." in instructions
+    assert "Do not ask for any visual sharing" in instructions
+    assert "Use code inspection and local tests" in instructions
     assert "time and space complexity" in instructions
     assert "Challenge id: minimum-meeting-rooms" in instructions
     assert "implement min_meeting_rooms" in instructions

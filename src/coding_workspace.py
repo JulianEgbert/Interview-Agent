@@ -109,6 +109,10 @@ def _workspace_root(workspace_root: Path | None = None) -> Path:
     return DEFAULT_WORKSPACE_ROOT
 
 
+def get_workspace_root(workspace_root: Path | None = None) -> Path:
+    return _workspace_root(workspace_root)
+
+
 def _workspace_readme(challenge: InterviewChallenge, spec: CodingSpec | None) -> str:
     lines = [
         f"# {challenge.title}",
