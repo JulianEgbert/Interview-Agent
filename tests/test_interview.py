@@ -1,10 +1,13 @@
-from interview import DEFAULT_CHALLENGE, OPENING_MESSAGE, build_interviewer_instructions
+from challenges import DEFAULT_CHALLENGE
+from interview import build_interviewer_instructions, build_opening_message
 
 
 def test_opening_message_starts_mvp_interview() -> None:
-    assert "thirty-five minutes" in OPENING_MESSAGE
-    assert "minimum number of meeting rooms" in OPENING_MESSAGE
-    assert "clarifying questions" in OPENING_MESSAGE
+    opening_message = build_opening_message(DEFAULT_CHALLENGE)
+
+    assert "thirty-five minutes" in opening_message
+    assert "minimum number of meeting rooms" in opening_message
+    assert "clarifying questions" in opening_message
 
 
 def test_default_challenge_has_interview_material() -> None:
@@ -21,3 +24,4 @@ def test_interviewer_instructions_keep_candidate_driving() -> None:
     assert "Do not provide the final algorithm or full solution" in instructions
     assert "This prototype does not analyze screen pixels directly." in instructions
     assert "time and space complexity" in instructions
+    assert "Challenge id: minimum-meeting-rooms" in instructions

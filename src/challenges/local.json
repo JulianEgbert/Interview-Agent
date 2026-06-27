@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "description": "Original InterviewRoom challenge catalog for hackathon demos.",
+  "challenges": [
+    {
+      "id": "minimum-meeting-rooms",
+      "title": "Minimum Meeting Rooms",
+      "type": "coding",
+      "difficulty": "new-grad",
+      "categories": ["arrays", "sorting"],
+      "tags": ["intervals", "heap", "sweep-line"],
+      "source": "original",
+      "prompt": "Given a list of calendar events with start and end times, determine the minimum number of meeting rooms required so that no meetings overlap in the same room.",
+      "examples": [
+        "Events from nine to ten thirty, nine thirty to eleven, and eleven to noon require two rooms.",
+        "Events from nine to ten and ten to eleven can reuse one room if an event ending at ten does not overlap an event starting at ten."
+      ],
+      "constraints": [
+        "The input may be unsorted.",
+        "Start times are earlier than end times.",
+        "Back-to-back events do not overlap.",
+        "The candidate may choose any reasonable representation for times."
+      ],
+      "interviewer_notes": [
+        "Look for clarification about interval boundaries.",
+        "Look for sorting by start time or separate sorted start and end times.",
+        "Look for a heap of active meeting end times or an equivalent sweep.",
+        "Ask for time and space complexity before wrapping up."
+      ],
+      "hints": [
+        "Think about processing the meetings in chronological order.",
+        "At any start time, only meetings that have not ended still need rooms.",
+        "A min heap of end times is one compact way to track active meetings."
+      ]
+    },
+    {
+      "id": "first-unique-visitor",
+      "title": "First Unique Visitor",
+      "type": "coding",
+      "difficulty": "intern",
+      "categories": ["arrays", "hash-maps"],
+      "tags": ["frequency-counting", "strings", "order"],
+      "source": "original",
+      "prompt": "Given a stream or list of visitor identifiers in arrival order, return the first identifier that appears exactly once. If every identifier repeats, return no result.",
+      "examples": [
+        "For visitors ava, ben, ava, cara, ben, the first unique visitor is cara.",
+        "For visitors kai, kai, noah, noah, there is no unique visitor."
+      ],
+      "constraints": [
+        "Visitor identifiers are strings.",
+        "The input can be empty.",
+        "The candidate may solve for a finite list first, then discuss a streaming version.",
+        "Preserving original arrival order matters."
+      ],
+      "interviewer_notes": [
+        "Look for a hash map from identifier to count.",
+        "Look for a second pass through the original order.",
+        "For a streaming follow-up, discuss queue plus counts or linked structure tradeoffs.",
+        "Ask how the solution changes if the stream is very large."
+      ],
+      "hints": [
+        "Separate counting from preserving order.",
+        "A hash map can tell you whether a visitor is unique.",
+        "A second pass can find the earliest identifier whose count is one."
+      ]
+    },
+    {
+      "id": "support-ticket-sla",
+      "title": "Support Ticket SLA",
+      "type": "backend",
+      "difficulty": "new-grad",
+      "categories": ["backend", "data-modeling"],
+      "tags": ["queues", "priority", "timestamps"],
+      "source": "original",
+      "prompt": "Design a function that receives support tickets with creation times, priority levels, and estimated handling times, then returns the order in which an agent should process them to minimize missed service-level deadlines.",
+      "examples": [
+        "A high-priority ticket due in ten minutes should usually be handled before a low-priority ticket due tomorrow.",
+        "If two tickets have the same deadline risk, the earlier created ticket should come first."
+      ],
+      "constraints": [
+        "Each ticket has an id, creation time, priority, estimated handling time, and deadline.",
+        "Priorities are high, medium, or low.",
+        "The first version can assume one support agent.",
+        "The candidate should state how ties are resolved."
+      ],
+      "interviewer_notes": [
+        "Look for a clear ranking strategy and tie breakers.",
+        "Probe whether priority or deadline should dominate.",
+        "Ask how the design changes for multiple agents.",
+        "Ask what data structure would support live ticket insertion."
+      ],
+      "hints": [
+        "Try defining a risk score or ordering key before coding.",
+        "Deadlines and estimated handling time can reveal which ticket is most urgent.",
+        "A priority queue can keep the next best ticket available as new tickets arrive."
+      ]
+    },
+    {
+      "id": "comment-thread-depth",
+      "title": "Comment Thread Depth",
+      "type": "coding",
+      "difficulty": "new-grad",
+      "categories": ["trees", "graphs"],
+      "tags": ["dfs", "cycle-detection", "data-modeling"],
+      "source": "original",
+      "prompt": "Given a list of comments where each comment has an id and an optional parent id, compute the maximum nesting depth of the thread. Invalid parent references should not crash the program.",
+      "examples": [
+        "A root comment with two direct replies has depth two.",
+        "A root comment, a reply, and a reply to that reply has depth three."
+      ],
+      "constraints": [
+        "The comments may arrive in any order.",
+        "Some parent ids may be missing.",
+        "A robust solution should avoid infinite loops if bad data creates a cycle.",
+        "There may be multiple root comments."
+      ],
+      "interviewer_notes": [
+        "Look for building an adjacency list or parent lookup.",
+        "Ask how the candidate handles missing parents.",
+        "Probe cycle detection and recursion depth concerns.",
+        "Ask for complexity in terms of comments and parent links."
+      ],
+      "hints": [
+        "Start by grouping comments by parent id.",
+        "Depth-first search from each root is one natural approach.",
+        "A visited or visiting set can protect against cycles."
+      ]
+    },
+    {
+      "id": "shopping-cart-promotions",
+      "title": "Shopping Cart Promotions",
+      "type": "coding",
+      "difficulty": "mid-level",
+      "categories": ["arrays", "business-logic"],
+      "tags": ["greedy", "sorting", "edge-cases"],
+      "source": "original",
+      "prompt": "Implement a checkout helper that applies a buy-two-get-one-free promotion to a shopping cart. For every three items in the same product category, the cheapest one should be free.",
+      "examples": [
+        "Three books priced ten, eight, and six make the six dollar book free.",
+        "Six snacks in one category should create two free items, each chosen to maximize the customer's discount."
+      ],
+      "constraints": [
+        "Promotions apply within the same product category only.",
+        "The input may contain multiple categories.",
+        "Prices are non-negative decimal values.",
+        "The candidate should avoid mutating the original cart unless they state that choice."
+      ],
+      "interviewer_notes": [
+        "Look for grouping by category before applying discounts.",
+        "Look for sorting prices in descending order to maximize the discount.",
+        "Ask about decimal money handling.",
+        "Probe edge cases such as fewer than three items and zero-priced items."
+      ],
+      "hints": [
+        "Handle one category at a time.",
+        "Think about which items should be grouped together to maximize the discount.",
+        "Sorting each category's prices can make the free-item positions clear."
+      ]
+    },
+    {
+      "id": "frontend-filter-state",
+      "title": "Frontend Filter State",
+      "type": "frontend",
+      "difficulty": "new-grad",
+      "categories": ["frontend", "state-management"],
+      "tags": ["react", "url-state", "debouncing"],
+      "source": "original",
+      "prompt": "Design a product search page state model with text search, category filters, sorting, and pagination. Explain how the UI state should sync with the URL so users can share a filtered view.",
+      "examples": [
+        "A user searches for headphones, filters to audio, sorts by rating, and shares the URL.",
+        "Changing the search text should reset pagination back to the first page."
+      ],
+      "constraints": [
+        "The user should be able to use the browser back button naturally.",
+        "The state should support multiple selected categories.",
+        "The search box may debounce network requests.",
+        "The candidate can describe components and data flow instead of writing full UI code."
+      ],
+      "interviewer_notes": [
+        "Look for clear separation between view state and server query parameters.",
+        "Ask what belongs in the URL versus local component state.",
+        "Probe race conditions from debounced searches.",
+        "Ask how the candidate would test the behavior."
+      ],
+      "hints": [
+        "Start by listing the state fields and who owns them.",
+        "Shareable state usually belongs in the URL.",
+        "Debouncing changes when requests fire, not what the canonical filter state is."
+      ]
+    },
+    {
+      "id": "undo-redo-editor",
+      "title": "Undo Redo Editor",
+      "type": "coding",
+      "difficulty": "new-grad",
+      "categories": ["data-structures", "design"],
+      "tags": ["stacks", "state", "commands"],
+      "source": "original",
+      "prompt": "Design a small text editor history system that supports applying edits, undo, and redo. After a new edit is applied, redo history should be cleared.",
+      "examples": [
+        "Typing A, typing B, then undo should return the document to A.",
+        "Typing A, undo, then typing C should make redo unavailable."
+      ],
+      "constraints": [
+        "An edit can be represented as a complete document snapshot or as an operation.",
+        "The first version can use strings for document contents.",
+        "Undo on the initial state should be safe.",
+        "The candidate should discuss the memory tradeoff of snapshots versus operations."
+      ],
+      "interviewer_notes": [
+        "Look for two-stack reasoning.",
+        "Ask when redo history should be invalidated.",
+        "Probe memory and performance tradeoffs.",
+        "Ask how this design changes for collaborative editing."
+      ],
+      "hints": [
+        "One stack can hold past states and one can hold undone future states.",
+        "Undo moves state in one direction; redo moves it back.",
+        "A brand-new edit should discard the future states."
+      ]
+    },
+    {
+      "id": "grid-delivery-zones",
+      "title": "Grid Delivery Zones",
+      "type": "coding",
+      "difficulty": "mid-level",
+      "categories": ["graphs", "matrices"],
+      "tags": ["bfs", "dfs", "connected-components"],
+      "source": "original",
+      "prompt": "Given a city grid where open cells represent deliverable addresses and blocked cells represent unavailable areas, count how many separate delivery zones exist.",
+      "examples": [
+        "A grid with two disconnected groups of open cells has two delivery zones.",
+        "Open cells connected diagonally only should be considered separate unless the candidate explicitly chooses diagonal movement."
+      ],
+      "constraints": [
+        "The grid can be empty.",
+        "Connectivity should be defined using up, down, left, and right neighbors.",
+        "The candidate may mutate a copy of the grid or use a visited set.",
+        "The solution should avoid revisiting the same cell repeatedly."
+      ],
+      "interviewer_notes": [
+        "Look for a traversal from each unvisited open cell.",
+        "Ask the candidate to define adjacency.",
+        "Probe empty grid and jagged row edge cases.",
+        "Ask for time and space complexity in terms of rows and columns."
+      ],
+      "hints": [
+        "Treat each open cell as a node in a graph.",
+        "Starting a search from an unvisited open cell discovers one whole zone.",
+        "A visited set prevents double counting."
+      ]
+    }
+  ]
+}

@@ -14,7 +14,8 @@ from livekit.agents import (
 )
 from livekit.plugins import ai_coustics
 
-from interview import OPENING_MESSAGE, build_interviewer_instructions
+from challenges import InterviewChallenge, select_challenge_from_env
+from interview import build_interviewer_instructions, build_opening_message
 
 logger = logging.getLogger("interview-room")
 
@@ -31,10 +32,10 @@ TTS_VOICE = os.getenv(
 
 
 class Interviewer(Agent):
-    def __init__(self) -> None:
+    def __init__(self, challenge: InterviewChallenge) -> None:
         super().__init__(
             llm=inference.LLM(model=LLM_MODEL),
-            instructions=build_interviewer_instructions(),
+            instructions=build_interviewer_instructions(challenge),
         )
 
 
@@ -43,9 +44,11 @@ server = AgentServer()
 
 @server.rtc_session(agent_name=AGENT_NAME)
 async def interview_room_agent(ctx: JobContext):
+    challenge = select_challenge_from_env()
     ctx.log_context_fields = {
         "room": ctx.room.name,
         "agent": AGENT_NAME,
+        "challenge": challenge.id,
     }
 
     session = AgentSession(
@@ -58,7 +61,7 @@ async def interview_room_agent(ctx: JobContext):
     )
 
     await session.start(
-        agent=Interviewer(),
+        agent=Interviewer(challenge),
         room=ctx.room,
         room_options=room_io.RoomOptions(
             audio_input=room_io.AudioInputOptions(
@@ -70,8 +73,12 @@ async def interview_room_agent(ctx: JobContext):
     )
 
     await ctx.connect()
-    logger.info("InterviewRoom agent joined room %s", ctx.room.name)
-    session.say(OPENING_MESSAGE, allow_interruptions=True)
+    logger.info(
+        "InterviewRoom agent joined room %s with challenge %s",
+        ctx.room.name,
+        challenge.id,
+    )
+    session.say(build_opening_message(challenge), allow_interruptions=True)
 
 
 if __name__ == "__main__":

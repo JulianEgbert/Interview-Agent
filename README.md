@@ -9,11 +9,12 @@ The student joins a realtime interview room, speaks with an AI interviewer, shar
 This repo now contains a first LiveKit Agents prototype for the hackathon:
 
 - `src/agent.py`: LiveKit voice agent entrypoint.
-- `src/interview.py`: InterviewRoom prompt, opening message, challenge, hints, and rubric.
+- `src/interview.py`: InterviewRoom prompt, opening message, and rubric.
+- `src/challenges.py` and `src/challenges/local.json`: Local challenge catalog and selector.
 - `tests/test_interview.py`: Fast local tests for the prototype behavior.
 - `Dockerfile`: Starter deployment container from the LiveKit Python agent template.
 
-The first demo path is a new-grad coding interview for the "minimum meeting rooms" problem. The agent joins a LiveKit room, speaks first, asks the candidate to clarify assumptions, nudges them through the problem, and can produce a concise scorecard when the candidate is finished.
+The first demo path can pick from a local catalog of coding, backend, and frontend challenges. The agent joins a LiveKit room, speaks first, asks the candidate to clarify assumptions, nudges them through the problem, and can produce a concise scorecard when the candidate is finished.
 
 ### Setup
 
@@ -62,6 +63,31 @@ Run tests:
 ```bash
 uv run pytest
 ```
+
+### Challenge Selection
+
+By default, each interview picks a random challenge from `src/challenges/local.json`.
+
+To force one specific challenge:
+
+```bash
+INTERVIEWROOM_CHALLENGE_ID=minimum-meeting-rooms uv run python src/agent.py console
+```
+
+To filter the random choice:
+
+```bash
+INTERVIEWROOM_CHALLENGE_TYPE=coding INTERVIEWROOM_CHALLENGE_DIFFICULTY=new-grad uv run python src/agent.py console
+```
+
+Supported filters are:
+
+- `INTERVIEWROOM_CHALLENGE_ID`
+- `INTERVIEWROOM_CHALLENGE_TYPE`
+- `INTERVIEWROOM_CHALLENGE_DIFFICULTY`
+- `INTERVIEWROOM_CHALLENGE_CATEGORY`
+- `INTERVIEWROOM_CHALLENGE_TAGS`, comma-separated
+- `INTERVIEWROOM_CHALLENGE_SEED`, useful for repeatable demos
 
 ### Current Scope
 

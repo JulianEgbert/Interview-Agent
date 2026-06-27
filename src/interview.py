@@ -1,49 +1,6 @@
 import textwrap
-from dataclasses import dataclass
 
-
-@dataclass(frozen=True)
-class InterviewChallenge:
-    title: str
-    prompt: str
-    examples: tuple[str, ...]
-    constraints: tuple[str, ...]
-    interviewer_notes: tuple[str, ...]
-    hints: tuple[str, ...]
-
-
-DEFAULT_CHALLENGE = InterviewChallenge(
-    title="Minimum Meeting Rooms",
-    prompt=(
-        "Given a list of calendar events with start and end times, determine "
-        "the minimum number of meeting rooms required so that no meetings "
-        "overlap in the same room."
-    ),
-    examples=(
-        "Events from nine to ten thirty, nine thirty to eleven, and eleven to "
-        "noon require two rooms.",
-        "Events from nine to ten and ten to eleven can reuse one room if an "
-        "event ending at ten does not overlap an event starting at ten.",
-    ),
-    constraints=(
-        "The input may be unsorted.",
-        "Start times are earlier than end times.",
-        "Back-to-back events do not overlap.",
-        "The candidate may choose any reasonable representation for times.",
-    ),
-    interviewer_notes=(
-        "Look for clarification about interval boundaries.",
-        "Look for sorting by start time or separate sorted start and end times.",
-        "Look for a heap of active meeting end times or an equivalent sweep.",
-        "Ask for time and space complexity before wrapping up.",
-    ),
-    hints=(
-        "Think about processing the meetings in chronological order.",
-        "At any start time, only meetings that have not ended still need rooms.",
-        "A min heap of end times is one compact way to track active meetings.",
-    ),
-)
-
+from challenges import DEFAULT_CHALLENGE, InterviewChallenge
 
 RUBRIC_DIMENSIONS = (
     "problem understanding",
@@ -57,14 +14,16 @@ RUBRIC_DIMENSIONS = (
 )
 
 
-OPENING_MESSAGE = (
-    "Hi, I am your interviewer today. We will spend about thirty-five minutes "
-    "on one coding problem. Please share your screen if you want me to follow "
-    "your work. Here is the problem: given a list of calendar events with start "
-    "and end times, determine the minimum number of meeting rooms required so "
-    "that no meetings overlap in the same room. Before coding, ask any "
-    "clarifying questions, then talk me through your approach."
-)
+def build_opening_message(challenge: InterviewChallenge = DEFAULT_CHALLENGE) -> str:
+    return (
+        "Hi, I am your interviewer today. We will spend about thirty-five minutes "
+        "on one problem. Please share your screen if you want me to follow your "
+        f"work. Here is the problem: {challenge.prompt} Before coding, ask any "
+        "clarifying questions, then talk me through your approach."
+    )
+
+
+OPENING_MESSAGE = build_opening_message()
 
 
 def build_interviewer_instructions(
@@ -77,6 +36,8 @@ def build_interviewer_instructions(
         f"{index}. {hint}" for index, hint in enumerate(challenge.hints, 1)
     )
     rubric = "\n".join(f"- {dimension}" for dimension in RUBRIC_DIMENSIONS)
+    categories = ", ".join(challenge.categories)
+    tags = ", ".join(challenge.tags)
 
     return textwrap.dedent(
         f"""\
@@ -113,6 +74,11 @@ def build_interviewer_instructions(
           you need details.
 
         Challenge title: {challenge.title}
+        Challenge id: {challenge.id}
+        Challenge type: {challenge.challenge_type}
+        Difficulty: {challenge.difficulty}
+        Categories: {categories}
+        Tags: {tags}
 
         Challenge prompt:
         {challenge.prompt}
