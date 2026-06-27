@@ -272,6 +272,7 @@ def write_evaluation_report(
     overall_score: int,
     problem_understanding: int,
     communication: int,
+    thinking_aloud: int,
     algorithmic_reasoning: int,
     code_correctness: int,
     edge_case_handling: int,
@@ -289,6 +290,7 @@ def write_evaluation_report(
     rubric_scores = {
         "Problem understanding": problem_understanding,
         "Communication": communication,
+        "Thinking aloud": thinking_aloud,
         "Algorithmic reasoning": algorithmic_reasoning,
         "Code correctness": code_correctness,
         "Edge case handling": edge_case_handling,

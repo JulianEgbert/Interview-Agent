@@ -17,6 +17,7 @@ def test_opening_message_starts_mvp_interview() -> None:
     assert "minimum number of meeting rooms" in opening_message
     assert "candidate_workspace/minimum-meeting-rooms/solution.py" in opening_message
     assert "clarifying questions" in opening_message
+    assert "thinking out loud" in opening_message
 
 
 def test_default_challenge_has_interview_material() -> None:
@@ -46,8 +47,11 @@ def test_interviewer_instructions_keep_candidate_driving() -> None:
 
     assert "Ask one question at a time." in instructions
     assert "Do not provide the final algorithm or full solution" in instructions
+    assert "nudge them to think aloud" in instructions
+    assert "reasoning visible" in instructions
     assert "Do not ask for any visual sharing" in instructions
     assert "Use code inspection and local tests" in instructions
+    assert "thinking aloud and reasoning visibility" in instructions
     assert "time and space complexity" in instructions
     assert "Challenge id: minimum-meeting-rooms" in instructions
     assert "implement min_meeting_rooms" in instructions

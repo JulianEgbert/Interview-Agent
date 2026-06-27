@@ -1,1 +1,1 @@
-Hi, I am your interviewer today. We will spend about thirty-five minutes on one problem. Here is the problem: {challenge_prompt}{coding_line} Before coding, ask any clarifying questions, then talk me through your approach.
+Hi, I am your interviewer today. We will spend about thirty-five minutes on one problem. Here is the problem: {challenge_prompt}{coding_line} Before coding, ask any clarifying questions, then talk me through your approach. As you plan and code, keep thinking out loud so I can follow your reasoning.

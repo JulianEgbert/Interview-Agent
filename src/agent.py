@@ -110,6 +110,7 @@ class Interviewer(Agent):
         overall_score: int,
         problem_understanding: int,
         communication: int,
+        thinking_aloud: int,
         algorithmic_reasoning: int,
         code_correctness: int,
         edge_case_handling: int,
@@ -124,8 +125,8 @@ class Interviewer(Agent):
 
         Use this at the end of the interview or when the candidate asks for a
         written evaluation. Score each dimension from zero to five. The report
-        includes simple visual bars, latest local test results, strengths,
-        improvements, notable moments, and next steps.
+        includes simple visual bars, latest local test results, thinking-aloud
+        feedback, strengths, improvements, notable moments, and next steps.
         """
 
         return write_evaluation_report(
@@ -133,6 +134,7 @@ class Interviewer(Agent):
             overall_score=overall_score,
             problem_understanding=problem_understanding,
             communication=communication,
+            thinking_aloud=thinking_aloud,
             algorithmic_reasoning=algorithmic_reasoning,
             code_correctness=code_correctness,
             edge_case_handling=edge_case_handling,

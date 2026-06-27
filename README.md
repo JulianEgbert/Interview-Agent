@@ -166,7 +166,7 @@ candidate_workspace/<challenge-id>/evaluation.md
 ```
 
 The report includes simple score bars, local test results, strengths,
-improvement areas, notable moments, and next steps.
+improvement areas, notable moments, thinking-aloud feedback, and next steps.
 
 ## Problem
 
@@ -233,7 +233,7 @@ The student enters a LiveKit room and uses:
 
 The AI interviewer begins with a realistic opening:
 
-> Hi, I am your interviewer today. We will spend about 35 minutes on one coding problem. Please ask clarifying questions and think out loud as you work.
+> Hi, I am your interviewer today. We will spend about 35 minutes on one coding problem. Before coding, ask clarifying questions, then talk me through your approach. As you plan and code, keep thinking out loud so I can follow your reasoning.
 
 ### 3. AI Interviewer Behavior
 
@@ -242,7 +242,7 @@ The interviewer should:
 - Present the problem clearly.
 - Ask the student to restate assumptions.
 - Encourage the student to think out loud.
-- Notice long silence and gently prompt.
+- Notice long silence and gently prompt the student to verbalize what they are considering.
 - Ask about edge cases.
 - Ask for time and space complexity.
 - Offer hints only when needed.
@@ -275,6 +275,7 @@ At the end of the session, the app generates a scorecard:
 
 - Problem understanding.
 - Communication.
+- Thinking aloud and reasoning visibility.
 - Clarifying questions.
 - Algorithmic reasoning.
 - Code correctness.
@@ -374,7 +375,7 @@ By the end of the hackathon, the demo should show:
 
 - A student joining a LiveKit room.
 - An AI interviewer conducting a live voice interview.
-- Screen sharing during problem solving.
+- A generated coding workspace that the agent can inspect and test.
 - Realistic follow-up questions.
 - A generated scorecard after the session.
 - A clear explanation of why LiveKit makes the experience possible.

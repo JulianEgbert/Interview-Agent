@@ -86,6 +86,7 @@ def test_write_evaluation_report_creates_markdown_scorecard(tmp_path: Path) -> N
         overall_score=4,
         problem_understanding=5,
         communication=4,
+        thinking_aloud=3,
         algorithmic_reasoning=4,
         code_correctness=3,
         edge_case_handling=4,
@@ -103,6 +104,7 @@ def test_write_evaluation_report_creates_markdown_scorecard(tmp_path: Path) -> N
     assert "# InterviewRoom Evaluation: First Unique Visitor" in report
     assert "[####-] 4/5" in report
     assert "| Problem understanding | `[#####] 5/5` |" in report
+    assert "| Thinking aloud | `[###--] 3/5` |" in report
     assert "## Local Test Result" in report
     assert "Clear reasoning" in report
 

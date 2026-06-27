@@ -11,6 +11,7 @@ RUBRIC_DIMENSIONS = (
     "problem understanding",
     "clarifying questions",
     "communication",
+    "thinking aloud and reasoning visibility",
     "algorithmic reasoning",
     "code correctness",
     "edge case handling",
