@@ -4,6 +4,69 @@ InterviewRoom is a LiveKit-powered mock software interview coach for students pr
 
 The student joins a realtime interview room, speaks with an AI interviewer, shares their screen while coding, and receives structured feedback afterward. The goal is not just to give students more coding problems, but to help them practice the live interview behaviors that are hard to train alone: thinking out loud, asking clarifying questions, handling hints, explaining tradeoffs, testing edge cases, and recovering when stuck.
 
+## Prototype
+
+This repo now contains a first LiveKit Agents prototype for the hackathon:
+
+- `src/agent.py`: LiveKit voice agent entrypoint.
+- `src/interview.py`: InterviewRoom prompt, opening message, challenge, hints, and rubric.
+- `tests/test_interview.py`: Fast local tests for the prototype behavior.
+- `Dockerfile`: Starter deployment container from the LiveKit Python agent template.
+
+The first demo path is a new-grad coding interview for the "minimum meeting rooms" problem. The agent joins a LiveKit room, speaks first, asks the candidate to clarify assumptions, nudges them through the problem, and can produce a concise scorecard when the candidate is finished.
+
+### Setup
+
+Create a LiveKit Cloud project, then copy the environment template:
+
+```bash
+cp .env.example .env.local
+```
+
+Fill in:
+
+```bash
+LIVEKIT_URL=
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+```
+
+If you are already authenticated with the LiveKit CLI, you can also write credentials with:
+
+```bash
+lk app env --write --destination .env.local
+```
+
+Install dependencies:
+
+```bash
+uv sync
+```
+
+### Run Locally
+
+Talk to the interviewer in the terminal:
+
+```bash
+uv run python src/agent.py console
+```
+
+Run the agent for LiveKit Agent Console or a frontend:
+
+```bash
+uv run python src/agent.py dev
+```
+
+Run tests:
+
+```bash
+uv run pytest
+```
+
+### Current Scope
+
+This prototype supports realtime voice through LiveKit and gives the candidate screen-sharing instructions, but it does not yet analyze screen pixels or editor state. For the hackathon demo, the candidate should narrate their code or describe important changes while screen sharing. A web frontend and screen-aware code review are the natural next steps.
+
 ## Problem
 
 Students can find many coding challenges online, but realistic interview practice is harder to access. A real technical interview includes time pressure, spoken reasoning, ambiguity, interviewer follow-up questions, and feedback on communication.

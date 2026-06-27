@@ -1,0 +1,27 @@
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage/
+dist/
+build/
+
+# Local environments
+.venv/
+venv/
+
+# Editor, OS, and local assistant state
+.DS_Store
+.idea/
+.vscode/
+.codex/config.local.toml
+.claude/settings.local.json
+.cursor/chat/
+.cursor/rules/*.local.mdc
