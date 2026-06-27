@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "description": "Local Python starter code and tests for coding-aware InterviewRoom sessions.",
+  "specs": [
+    {
+      "challenge_id": "minimum-meeting-rooms",
+      "language": "python",
+      "function_name": "min_meeting_rooms",
+      "starter_code": "def min_meeting_rooms(events):\n    \"\"\"Return the minimum number of rooms needed for the given events.\n\n    events is a list of [start, end] pairs. Start and end are integer minutes.\n    Back-to-back meetings do not overlap.\n    \"\"\"\n    # TODO: implement your solution here.\n    return 0\n",
+      "timeout_seconds": 2.0,
+      "test_cases": [
+        {
+          "name": "overlapping meetings need two rooms",
+          "args": [[ [540, 630], [570, 660], [660, 720] ]],
+          "expected": 2
+        },
+        {
+          "name": "back-to-back meetings reuse one room",
+          "args": [[ [540, 600], [600, 660], [660, 720] ]],
+          "expected": 1
+        },
+        {
+          "name": "nested overlaps need three rooms",
+          "args": [[ [540, 720], [560, 600], [580, 660] ]],
+          "expected": 3
+        },
+        {
+          "name": "empty calendar needs no rooms",
+          "args": [[]],
+          "expected": 0
+        }
+      ]
+    },
+    {
+      "challenge_id": "first-unique-visitor",
+      "language": "python",
+      "function_name": "first_unique_visitor",
+      "starter_code": "def first_unique_visitor(visitors):\n    \"\"\"Return the first visitor id that appears exactly once, or None.\n\n    visitors is a list of strings in arrival order.\n    \"\"\"\n    # TODO: implement your solution here.\n    return None\n",
+      "timeout_seconds": 2.0,
+      "test_cases": [
+        {
+          "name": "finds the first id with one visit",
+          "args": [[ "ava", "ben", "ava", "cara", "ben" ]],
+          "expected": "cara"
+        },
+        {
+          "name": "returns None when everyone repeats",
+          "args": [[ "kai", "kai", "noah", "noah" ]],
+          "expected": null
+        },
+        {
+          "name": "preserves arrival order rather than sorted order",
+          "args": [[ "zara", "amy", "zara", "mia" ]],
+          "expected": "amy"
+        },
+        {
+          "name": "handles an empty stream",
+          "args": [[]],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "challenge_id": "comment-thread-depth",
+      "language": "python",
+      "function_name": "max_thread_depth",
+      "starter_code": "def max_thread_depth(comments):\n    \"\"\"Return the maximum nesting depth of a comment thread.\n\n    comments is a list of dictionaries with id and parent_id keys.\n    parent_id is None for root comments. Invalid parents should not crash.\n    \"\"\"\n    # TODO: implement your solution here.\n    return 0\n",
+      "timeout_seconds": 2.0,
+      "test_cases": [
+        {
+          "name": "single root has depth one",
+          "args": [[ { "id": "a", "parent_id": null } ]],
+          "expected": 1
+        },
+        {
+          "name": "nested replies count full depth",
+          "args": [[ { "id": "a", "parent_id": null }, { "id": "b", "parent_id": "a" }, { "id": "c", "parent_id": "b" } ]],
+          "expected": 3
+        },
+        {
+          "name": "multiple roots use the deepest thread",
+          "args": [[ { "id": "a", "parent_id": null }, { "id": "b", "parent_id": null }, { "id": "c", "parent_id": "b" } ]],
+          "expected": 2
+        },
+        {
+          "name": "missing parent is treated as a root-level orphan",
+          "args": [[ { "id": "orphan", "parent_id": "missing" } ]],
+          "expected": 1
+        }
+      ]
+    },
+    {
+      "challenge_id": "shopping-cart-promotions",
+      "language": "python",
+      "function_name": "promotion_discount",
+      "starter_code": "def promotion_discount(items):\n    \"\"\"Return the total discount for buy-two-get-one-free by category.\n\n    items is a list of dictionaries with category and price keys.\n    For every three items in the same category, the cheapest one in that group is free.\n    \"\"\"\n    # TODO: implement your solution here.\n    return 0\n",
+      "timeout_seconds": 2.0,
+      "test_cases": [
+        {
+          "name": "one category with three items discounts the cheapest",
+          "args": [[ { "category": "books", "price": 10 }, { "category": "books", "price": 8 }, { "category": "books", "price": 6 } ]],
+          "expected": 6
+        },
+        {
+          "name": "six items maximize two free items",
+          "args": [[ { "category": "snacks", "price": 10 }, { "category": "snacks", "price": 9 }, { "category": "snacks", "price": 8 }, { "category": "snacks", "price": 7 }, { "category": "snacks", "price": 6 }, { "category": "snacks", "price": 5 } ]],
+          "expected": 13
+        },
+        {
+          "name": "categories are handled independently",
+          "args": [[ { "category": "books", "price": 10 }, { "category": "books", "price": 8 }, { "category": "books", "price": 6 }, { "category": "games", "price": 60 }, { "category": "games", "price": 50 } ]],
+          "expected": 6
+        }
+      ]
+    },
+    {
+      "challenge_id": "grid-delivery-zones",
+      "language": "python",
+      "function_name": "count_delivery_zones",
+      "starter_code": "def count_delivery_zones(grid):\n    \"\"\"Return the number of connected delivery zones in the grid.\n\n    grid is a list of strings. A dot means open and a hash means blocked.\n    Use up, down, left, and right connectivity only.\n    \"\"\"\n    # TODO: implement your solution here.\n    return 0\n",
+      "timeout_seconds": 2.0,
+      "test_cases": [
+        {
+          "name": "empty grid has no zones",
+          "args": [[]],
+          "expected": 0
+        },
+        {
+          "name": "one connected open area",
+          "args": [[ "...", ".#.", "..." ]],
+          "expected": 1
+        },
+        {
+          "name": "separate islands count separately",
+          "args": [[ ".#.", "###", ".#." ]],
+          "expected": 2
+        },
+        {
+          "name": "diagonal-only cells are separate",
+          "args": [[ ".#", "#." ]],
+          "expected": 2
+        }
+      ]
+    }
+  ]
+}

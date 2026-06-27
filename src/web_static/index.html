@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>InterviewRoom Demo</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel session-panel">
+        <div>
+          <p class="eyebrow">InterviewRoom</p>
+          <h1>Live coding interview</h1>
+        </div>
+
+        <label>
+          Candidate name
+          <input id="participantName" type="text" value="Demo Candidate" />
+        </label>
+
+        <label>
+          Challenge
+          <select id="challengeSelect"></select>
+        </label>
+
+        <div class="button-row">
+          <button id="connectButton" type="button">Start interview</button>
+          <button id="disconnectButton" type="button" disabled>Leave</button>
+        </div>
+
+        <div class="button-row single">
+          <button id="micButton" type="button" disabled>Toggle mic</button>
+        </div>
+
+        <p id="status" class="status">Loading challenges...</p>
+      </section>
+
+      <section class="panel challenge-panel">
+        <p class="eyebrow">Challenge</p>
+        <h2 id="challengeTitle">Select a challenge</h2>
+        <p id="challengePrompt" class="prompt"></p>
+        <div id="challengeMeta" class="meta-grid"></div>
+        <div class="detail-grid">
+          <div>
+            <h3>Examples</h3>
+            <ul id="challengeExamples"></ul>
+          </div>
+          <div>
+            <h3>Constraints</h3>
+            <ul id="challengeConstraints"></ul>
+          </div>
+        </div>
+        <div id="workspaceLinks" class="links"></div>
+      </section>
+
+      <section class="panel room-panel">
+        <p class="eyebrow">Room</p>
+        <h2>Participants and audio</h2>
+        <p id="roomSummary" class="room-summary">No active room.</p>
+        <div id="participants" class="participants"></div>
+        <div id="audioTracks" class="audio-tracks"></div>
+      </section>
+
+      <section class="panel evaluation-panel">
+        <div class="evaluation-header">
+          <div>
+            <p class="eyebrow">Evaluation</p>
+            <h2>Visual scorecard</h2>
+          </div>
+          <button id="refreshEvaluationButton" type="button" disabled>Refresh</button>
+        </div>
+        <p id="evaluationStatus" class="evaluation-status">
+          Start an interview, then ask the agent to write an evaluation report.
+        </p>
+        <div id="evaluationContent" class="evaluation-content"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

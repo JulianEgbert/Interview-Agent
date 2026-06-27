@@ -6,7 +6,9 @@ from challenges import (
     challenge_from_mapping,
     filter_challenges,
     get_challenge,
+    get_coding_spec,
     load_challenges,
+    load_coding_specs,
     select_challenge,
 )
 
@@ -26,6 +28,16 @@ def test_get_challenge_preserves_meeting_rooms() -> None:
     assert challenge.title == "Minimum Meeting Rooms"
     assert "intervals" in challenge.tags
     assert "Back-to-back events do not overlap." in challenge.constraints
+
+
+def test_coding_specs_target_existing_challenges() -> None:
+    challenge_ids = {challenge.id for challenge in load_challenges()}
+    specs = load_coding_specs()
+
+    assert len(specs) >= 5
+    assert all(spec.challenge_id in challenge_ids for spec in specs)
+    assert get_coding_spec("minimum-meeting-rooms").function_name == "min_meeting_rooms"
+    assert get_coding_spec("frontend-filter-state") is None
 
 
 def test_filter_challenges_by_type_difficulty_and_tag() -> None:
