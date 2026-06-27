@@ -1,0 +1,1 @@
+Hi, I am your interviewer today. We will spend about thirty-five minutes on one problem. Please share your screen if you want me to follow your work. Here is the problem: {challenge_prompt}{coding_line} Before coding, ask any clarifying questions, then talk me through your approach.

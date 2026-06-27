@@ -22,6 +22,7 @@ from coding_workspace import (
     prepare_candidate_workspace,
     read_candidate_code,
     run_candidate_tests,
+    write_evaluation_report,
 )
 from interview import build_interviewer_instructions, build_opening_message
 
@@ -86,6 +87,47 @@ class Interviewer(Agent):
         """
 
         return run_candidate_tests(self.workspace)
+
+    @function_tool
+    async def write_evaluation_report(
+        self,
+        context: RunContext,
+        overall_score: int,
+        problem_understanding: int,
+        communication: int,
+        algorithmic_reasoning: int,
+        code_correctness: int,
+        edge_case_handling: int,
+        testing_approach: int,
+        complexity_discussion: int,
+        strengths: str,
+        improvements: str,
+        next_steps: str,
+        transcript_moments: str = "",
+    ) -> str:
+        """Write a markdown interview scorecard to the candidate workspace.
+
+        Use this at the end of the interview or when the candidate asks for a
+        written evaluation. Score each dimension from zero to five. The report
+        includes simple visual bars, latest local test results, strengths,
+        improvements, notable moments, and next steps.
+        """
+
+        return write_evaluation_report(
+            self.workspace,
+            overall_score=overall_score,
+            problem_understanding=problem_understanding,
+            communication=communication,
+            algorithmic_reasoning=algorithmic_reasoning,
+            code_correctness=code_correctness,
+            edge_case_handling=edge_case_handling,
+            testing_approach=testing_approach,
+            complexity_discussion=complexity_discussion,
+            strengths=strengths,
+            improvements=improvements,
+            next_steps=next_steps,
+            transcript_moments=transcript_moments,
+        )
 
 
 server = AgentServer()

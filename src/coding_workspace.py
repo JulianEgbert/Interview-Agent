@@ -10,6 +10,9 @@ from challenges import CodingSpec, InterviewChallenge, get_coding_spec
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_WORKSPACE_ROOT = PROJECT_ROOT / "candidate_workspace"
+EVALUATION_TEMPLATE_PATH = (
+    Path(__file__).with_name("templates") / "evaluation_report.md"
+)
 
 RUNNER_CODE = r"""
 import importlib.util
@@ -88,6 +91,10 @@ class CandidateWorkspace:
     @property
     def has_runnable_tests(self) -> bool:
         return self.coding_spec is not None and self.solution_path is not None
+
+    @property
+    def evaluation_path(self) -> Path:
+        return self.directory / "evaluation.md"
 
 
 def _workspace_root(workspace_root: Path | None = None) -> Path:
@@ -237,3 +244,69 @@ def format_test_result(result: dict[str, Any]) -> str:
             lines.append(f"  Actual: {case.get('actual')}")
 
     return "\n".join(lines)
+
+
+def _score_bar(score: int, *, maximum: int = 5) -> str:
+    normalized_score = max(0, min(maximum, int(score)))
+    return f"[{'#' * normalized_score}{'-' * (maximum - normalized_score)}] {normalized_score}/{maximum}"
+
+
+def _markdown_text_block(text: str) -> str:
+    cleaned = text.strip()
+    return cleaned if cleaned else "Not noted."
+
+
+def _rubric_rows(rubric_scores: dict[str, int]) -> str:
+    return "\n".join(
+        f"| {label} | `{_score_bar(score)}` |" for label, score in rubric_scores.items()
+    )
+
+
+def write_evaluation_report(
+    workspace: CandidateWorkspace,
+    *,
+    overall_score: int,
+    problem_understanding: int,
+    communication: int,
+    algorithmic_reasoning: int,
+    code_correctness: int,
+    edge_case_handling: int,
+    testing_approach: int,
+    complexity_discussion: int,
+    strengths: str,
+    improvements: str,
+    next_steps: str,
+    transcript_moments: str = "",
+) -> str:
+    """Write a local markdown evaluation report for the current interview."""
+
+    test_result = run_candidate_tests(workspace)
+    solution_path = workspace.solution_path or "No local solution file"
+    rubric_scores = {
+        "Problem understanding": problem_understanding,
+        "Communication": communication,
+        "Algorithmic reasoning": algorithmic_reasoning,
+        "Code correctness": code_correctness,
+        "Edge case handling": edge_case_handling,
+        "Testing approach": testing_approach,
+        "Complexity discussion": complexity_discussion,
+    }
+
+    template = EVALUATION_TEMPLATE_PATH.read_text(encoding="utf-8")
+    report = template.format(
+        challenge_title=workspace.challenge.title,
+        challenge_id=workspace.challenge.id,
+        difficulty=workspace.challenge.difficulty,
+        challenge_type=workspace.challenge.challenge_type,
+        solution_path=solution_path,
+        overall_score_bar=_score_bar(overall_score),
+        rubric_rows=_rubric_rows(rubric_scores),
+        test_result=test_result,
+        strengths=_markdown_text_block(strengths),
+        improvements=_markdown_text_block(improvements),
+        transcript_moments=_markdown_text_block(transcript_moments),
+        next_steps=_markdown_text_block(next_steps),
+    )
+
+    workspace.evaluation_path.write_text(report, encoding="utf-8")
+    return f"Evaluation report written to {workspace.evaluation_path}"

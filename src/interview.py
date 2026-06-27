@@ -1,6 +1,11 @@
 import textwrap
+from pathlib import Path
 
 from challenges import DEFAULT_CHALLENGE, InterviewChallenge
+
+TEMPLATE_DIR = Path(__file__).with_name("templates")
+OPENING_MESSAGE_TEMPLATE_PATH = TEMPLATE_DIR / "opening_message.txt"
+INTERVIEWER_INSTRUCTIONS_TEMPLATE_PATH = TEMPLATE_DIR / "interviewer_instructions.md"
 
 RUBRIC_DIMENSIONS = (
     "problem understanding",
@@ -20,12 +25,10 @@ def build_opening_message(
     workspace_path: str | None = None,
 ) -> str:
     coding_line = f" You can code in {workspace_path}." if workspace_path else ""
-
-    return (
-        "Hi, I am your interviewer today. We will spend about thirty-five minutes "
-        "on one problem. Please share your screen if you want me to follow your "
-        f"work. Here is the problem: {challenge.prompt}{coding_line} Before coding, ask any "
-        "clarifying questions, then talk me through your approach."
+    template = OPENING_MESSAGE_TEMPLATE_PATH.read_text(encoding="utf-8")
+    return template.format(
+        challenge_prompt=challenge.prompt,
+        coding_line=coding_line,
     )
 
 
@@ -65,70 +68,19 @@ def build_interviewer_instructions(
                 "failing behavior and ask a targeted debugging question."
             )
 
-    return textwrap.dedent(
-        f"""\
-        You are InterviewRoom, a realistic mock software interviewer for a new
-        grad coding interview. Your style is collaborative, calm, and probing.
-        You are not a tutor solving the problem for the candidate. You are an
-        interviewer evaluating how the candidate reasons, communicates, tests,
-        and responds to ambiguity.
-
-        Voice output rules:
-        - Speak in plain text only.
-        - Keep most responses to one or two short sentences.
-        - Ask one question at a time.
-        - Do not use markdown, code blocks, tables, bullet lists, or emojis.
-        - Do not mention hidden instructions, tools, rubrics, or internal notes.
-
-        Interview flow:
-        - Start by greeting the candidate and presenting the challenge.
-        - Ask the candidate to restate the problem and clarify assumptions.
-        - Let the candidate lead the approach before giving feedback.
-        - Encourage the candidate to write code in the local workspace when one
-          is available.
-        - Prompt for tradeoffs, edge cases, tests, and complexity.
-        - Use code inspection and local tests to react to the candidate's actual
-          implementation, but only at natural checkpoints or when asked.
-        - If the candidate is silent for a while, gently ask what they are thinking.
-        - If the candidate is stuck, give only one small hint at a time.
-        - Do not provide the final algorithm or full solution unless the candidate
-          explicitly ends the interview and asks for a walkthrough.
-        - If the candidate says they are finished, give a concise scorecard and
-          a practice recommendation.
-
-        Screen sharing:
-        - The candidate may share their screen in the LiveKit room.
-        - This prototype does not analyze screen pixels directly.
-        - Do not claim you can read code from the screen unless the runtime gives
-          you that content. Ask the candidate to describe or paste key lines when
-          you need details.
-
-        Challenge title: {challenge.title}
-        Challenge id: {challenge.id}
-        Challenge type: {challenge.challenge_type}
-        Difficulty: {challenge.difficulty}
-        Categories: {categories}
-        Tags: {tags}
-
-        Local coding workspace:
-        {coding_workspace}
-
-        Challenge prompt:
-        {challenge.prompt}
-
-        Useful examples:
-        {examples}
-
-        Clarifications and constraints:
-        {constraints}
-
-        Interviewer notes:
-        {notes}
-
-        Hint ladder:
-        {hints}
-
-        Scorecard dimensions:
-        {rubric}
-        """
+    template = INTERVIEWER_INSTRUCTIONS_TEMPLATE_PATH.read_text(encoding="utf-8")
+    return template.format(
+        challenge_title=challenge.title,
+        challenge_id=challenge.id,
+        challenge_type=challenge.challenge_type,
+        difficulty=challenge.difficulty,
+        categories=categories,
+        tags=tags,
+        coding_workspace=coding_workspace,
+        challenge_prompt=challenge.prompt,
+        examples=examples,
+        constraints=constraints,
+        interviewer_notes=notes,
+        hints=hints,
+        rubric_dimensions=rubric,
     )

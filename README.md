@@ -121,6 +121,19 @@ or:
 
 The agent can read the current solution and run the local challenge tests, then respond as an interviewer without giving away the full answer.
 
+At the end of the interview, ask for a written evaluation:
+
+> Can you write my evaluation report?
+
+The agent creates:
+
+```text
+candidate_workspace/<challenge-id>/evaluation.md
+```
+
+The report includes simple score bars, local test results, strengths,
+improvement areas, notable moments, and next steps.
+
 ## Problem
 
 Students can find many coding challenges online, but realistic interview practice is harder to access. A real technical interview includes time pressure, spoken reasoning, ambiguity, interviewer follow-up questions, and feedback on communication.
