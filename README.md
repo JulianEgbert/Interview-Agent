@@ -66,6 +66,17 @@ Run tests:
 uv run pytest
 ```
 
+### Project Showcase Page
+
+This repository also includes a static landing page for GitHub Pages:
+
+- `docs/index.html`
+- `docs/styles.css`
+- `docs/assets/interviewroom-hero.png`
+
+To publish it, enable GitHub Pages for the repository branch and choose the
+`/docs` folder as the Pages source. No frontend build step is required.
+
 ### Challenge Selection
 
 By default, each interview picks a random challenge from `src/challenges/local.json`.

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>InterviewRoom - Realtime AI Mock Interviews</title>
+    <meta
+      name="description"
+      content="InterviewRoom is a LiveKit-powered AI mock interview room for practicing voice, screen sharing, technical reasoning, and structured feedback."
+    >
+    <meta property="og:title" content="InterviewRoom">
+    <meta
+      property="og:description"
+      content="Realtime technical interview practice with an AI interviewer, screen sharing, challenge prompts, and a post-interview scorecard."
+    >
+    <meta property="og:image" content="assets/interviewroom-hero.png">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preload" as="image" href="assets/interviewroom-hero.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="InterviewRoom home">
+          <img class="brand-mark" src="assets/favicon.svg" alt="" aria-hidden="true">
+          <span>InterviewRoom</span>
+        </a>
+        <div class="nav-links">
+          <a href="#experience">Experience</a>
+          <a href="#flow">Demo flow</a>
+          <a href="#run-locally">Run locally</a>
+          <a href="https://github.com/JulianEgbert/Interview-Agent" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="eyebrow">LiveKit Agents prototype</p>
+          <h1 id="hero-title">InterviewRoom</h1>
+          <p class="hero-lede">
+            A realtime AI mock interviewer that helps students practice the
+            parts of technical interviews that solo coding problems miss:
+            speaking clearly, asking questions, sharing work, and recovering
+            when stuck.
+          </p>
+          <div class="hero-actions" aria-label="Page actions">
+            <a class="button button-primary" href="#experience">Explore the idea</a>
+            <a class="button button-secondary" href="#run-locally">Run the prototype</a>
+            <a
+              class="button button-secondary"
+              href="https://github.com/JulianEgbert/Interview-Agent"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on GitHub
+            </a>
+          </div>
+          <dl class="hero-stats" aria-label="Prototype highlights">
+            <div>
+              <dt>35 min</dt>
+              <dd>interview loop</dd>
+            </div>
+            <div>
+              <dt>Live voice</dt>
+              <dd>through LiveKit</dd>
+            </div>
+            <div>
+              <dt>8 dimensions</dt>
+              <dd>in the scorecard</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="section intro-band" aria-label="Product summary">
+        <div class="container intro-grid">
+          <p class="section-kicker">Why it matters</p>
+          <h2>Most practice tools grade answers. InterviewRoom practices the room.</h2>
+          <p>
+            The prototype joins a LiveKit room as a calm, probing interviewer.
+            It presents an original challenge, asks for clarification, nudges
+            the candidate through tradeoffs and tests, then wraps with concise
+            feedback on the full interview process.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="experience" aria-labelledby="experience-title">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-kicker">Experience</p>
+            <h2 id="experience-title">Designed for realistic technical practice</h2>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card tone-teal">
+              <span class="feature-icon" aria-hidden="true">01</span>
+              <h3>Realtime interviewer</h3>
+              <p>
+                The agent starts the session, gives one problem, asks one
+                question at a time, and keeps the tone supportive without
+                turning into a solution walkthrough.
+              </p>
+            </article>
+            <article class="feature-card tone-coral">
+              <span class="feature-icon" aria-hidden="true">02</span>
+              <h3>Screen-share context</h3>
+              <p>
+                Candidates can share their editor or browser while narrating
+                decisions. The prototype is transparent about what it can and
+                cannot read from the screen today.
+              </p>
+            </article>
+            <article class="feature-card tone-gold">
+              <span class="feature-icon" aria-hidden="true">03</span>
+              <h3>Process feedback</h3>
+              <p>
+                The scorecard focuses on communication, clarification,
+                algorithmic reasoning, edge cases, testing, complexity, and
+                readiness for the next interview.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-dark" id="flow" aria-labelledby="flow-title">
+        <div class="container flow-layout">
+          <div class="flow-copy">
+            <p class="section-kicker">Demo flow</p>
+            <h2 id="flow-title">One polished interview path for a hackathon demo</h2>
+            <p>
+              The current agent can pick from a local challenge catalog,
+              greet the candidate, guide the conversation, and close with
+              structured feedback when the candidate says they are finished.
+            </p>
+          </div>
+
+          <ol class="timeline">
+            <li>
+              <span>Join</span>
+              <p>Start a new-grad coding interview in a LiveKit room.</p>
+            </li>
+            <li>
+              <span>Share</span>
+              <p>Use voice and optional screen sharing while solving.</p>
+            </li>
+            <li>
+              <span>Reason</span>
+              <p>Clarify assumptions, discuss tradeoffs, test edge cases.</p>
+            </li>
+            <li>
+              <span>Improve</span>
+              <p>Finish with a scorecard and focused practice recommendation.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section challenges" aria-labelledby="challenge-title">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-kicker">Challenge catalog</p>
+            <h2 id="challenge-title">Original prompts for coding, backend, and frontend practice</h2>
+          </div>
+
+          <div class="challenge-grid">
+            <article>
+              <h3>Minimum Meeting Rooms</h3>
+              <p>Intervals, sorting, heaps, and sweep-line reasoning.</p>
+            </article>
+            <article>
+              <h3>Support Ticket SLA</h3>
+              <p>Backend prioritization, timestamps, queues, and tradeoffs.</p>
+            </article>
+            <article>
+              <h3>Frontend Filter State</h3>
+              <p>URL state, debouncing, pagination, and component design.</p>
+            </article>
+            <article>
+              <h3>Undo Redo Editor</h3>
+              <p>Stacks, state snapshots, memory tradeoffs, and edge cases.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section run-band" id="run-locally" aria-labelledby="run-title">
+        <div class="container run-grid">
+          <div>
+            <p class="section-kicker">Prototype</p>
+            <h2 id="run-title">Run the LiveKit agent locally</h2>
+            <p>
+              The landing page is plain HTML and CSS for GitHub Pages. The
+              interview agent remains a Python prototype powered by uv and the
+              LiveKit Agents runtime.
+            </p>
+          </div>
+
+          <div class="terminal" role="region" aria-label="Local run commands">
+            <div class="terminal-top" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <pre><code>cp .env.example .env.local
+uv sync
+uv run python src/agent.py console
+uv run pytest</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>InterviewRoom - realtime practice for the interview behaviors that matter.</p>
+        <div class="footer-links">
+          <a href="https://github.com/JulianEgbert/Interview-Agent" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
