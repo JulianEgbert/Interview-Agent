@@ -7,12 +7,12 @@
     <title>InterviewRoom - Realtime AI Mock Interviews</title>
     <meta
       name="description"
-      content="InterviewRoom is a LiveKit-powered AI mock interview room for practicing voice, screen sharing, technical reasoning, and structured feedback."
+      content="InterviewRoom is a LiveKit-powered AI mock interview room for practicing voice, technical reasoning, local coding, and structured feedback."
     >
     <meta property="og:title" content="InterviewRoom">
     <meta
       property="og:description"
-      content="Realtime technical interview practice with an AI interviewer, screen sharing, challenge prompts, and a post-interview scorecard."
+      content="Realtime technical interview practice with an AI interviewer, local coding workspace, challenge prompts, and a markdown scorecard."
     >
     <meta property="og:image" content="assets/interviewroom-hero.png">
     <meta property="og:type" content="website">
@@ -30,6 +30,7 @@
           <span>InterviewRoom</span>
         </a>
         <div class="nav-links">
+          <a href="#latest">Latest</a>
           <a href="#experience">Experience</a>
           <a href="#flow">Demo flow</a>
           <a href="#run-locally">Run locally</a>
@@ -46,7 +47,7 @@
           <p class="hero-lede">
             A realtime AI mock interviewer that helps students practice the
             parts of technical interviews that solo coding problems miss:
-            speaking clearly, asking questions, sharing work, and recovering
+            speaking clearly, asking questions, coding out loud, and recovering
             when stuck.
           </p>
           <div class="hero-actions" aria-label="Page actions">
@@ -63,16 +64,16 @@
           </div>
           <dl class="hero-stats" aria-label="Prototype highlights">
             <div>
-              <dt>35 min</dt>
-              <dd>interview loop</dd>
+              <dt>Local web</dt>
+              <dd>LiveKit Cloud room</dd>
             </div>
             <div>
-              <dt>Live voice</dt>
-              <dd>through LiveKit</dd>
+              <dt>VS Code</dt>
+              <dd>solution handoff</dd>
             </div>
             <div>
-              <dt>8 dimensions</dt>
-              <dd>in the scorecard</dd>
+              <dt>Markdown</dt>
+              <dd>evaluation report</dd>
             </div>
           </dl>
         </div>
@@ -85,9 +86,46 @@
           <p>
             The prototype joins a LiveKit room as a calm, probing interviewer.
             It presents an original challenge, asks for clarification, nudges
-            the candidate through tradeoffs and tests, then wraps with concise
-            feedback on the full interview process.
+            the candidate through tradeoffs and tests, inspects their local
+            solution file when asked, then writes concise feedback on the full
+            interview process.
           </p>
+        </div>
+      </section>
+
+      <section class="section latest" id="latest" aria-labelledby="latest-title">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-kicker">Latest prototype</p>
+            <h2 id="latest-title">A local browser room connected to LiveKit Cloud</h2>
+          </div>
+
+          <div class="latest-grid">
+            <article>
+              <h3>Browser interview room</h3>
+              <p>
+                A tiny Python web server creates a room token, dispatches the
+                local LiveKit agent, and lets the candidate join from
+                <code>localhost:8765</code>.
+              </p>
+            </article>
+            <article>
+              <h3>Inspectable coding workspace</h3>
+              <p>
+                Coding challenges generate a local <code>solution.py</code>.
+                The web UI opens that file in VS Code, and the agent can inspect
+                it or run local tests at natural checkpoints.
+              </p>
+            </article>
+            <article>
+              <h3>Written evaluation</h3>
+              <p>
+                At the end of the interview, the agent can write an
+                <code>evaluation.md</code> report with score bars, test results,
+                strengths, improvement areas, and next steps.
+              </p>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -110,11 +148,11 @@
             </article>
             <article class="feature-card tone-coral">
               <span class="feature-icon" aria-hidden="true">02</span>
-              <h3>Screen-share context</h3>
+              <h3>Workspace context</h3>
               <p>
-                Candidates can share their editor or browser while narrating
-                decisions. The prototype is transparent about what it can and
-                cannot read from the screen today.
+                Candidates work in the generated local solution file while
+                narrating decisions. The agent can read that file and run
+                challenge tests without needing a visual sharing setup.
               </p>
             </article>
             <article class="feature-card tone-gold">
@@ -145,19 +183,19 @@
           <ol class="timeline">
             <li>
               <span>Join</span>
-              <p>Start a new-grad coding interview in a LiveKit room.</p>
+              <p>Start a coding interview from the local browser room.</p>
             </li>
             <li>
-              <span>Share</span>
-              <p>Use voice and optional screen sharing while solving.</p>
+              <span>Code</span>
+              <p>Open the generated solution file in VS Code and think aloud.</p>
             </li>
             <li>
               <span>Reason</span>
-              <p>Clarify assumptions, discuss tradeoffs, test edge cases.</p>
+              <p>Clarify assumptions, discuss tradeoffs, and test edge cases.</p>
             </li>
             <li>
               <span>Improve</span>
-              <p>Finish with a scorecard and focused practice recommendation.</p>
+              <p>Finish with a markdown scorecard and focused practice plan.</p>
             </li>
           </ol>
         </div>
@@ -173,19 +211,19 @@
           <div class="challenge-grid">
             <article>
               <h3>Minimum Meeting Rooms</h3>
-              <p>Intervals, sorting, heaps, and sweep-line reasoning.</p>
+              <p>Runnable Python workspace for intervals, sorting, heaps, and sweep-line reasoning.</p>
             </article>
             <article>
-              <h3>Support Ticket SLA</h3>
-              <p>Backend prioritization, timestamps, queues, and tradeoffs.</p>
+              <h3>First Unique Visitor</h3>
+              <p>Runnable Python workspace for frequency counting, order, and edge cases.</p>
             </article>
             <article>
-              <h3>Frontend Filter State</h3>
-              <p>URL state, debouncing, pagination, and component design.</p>
+              <h3>Comment Thread Depth</h3>
+              <p>Runnable Python workspace for tree traversal, invalid parents, and cycles.</p>
             </article>
             <article>
-              <h3>Undo Redo Editor</h3>
-              <p>Stacks, state snapshots, memory tradeoffs, and edge cases.</p>
+              <h3>Backend and frontend prompts</h3>
+              <p>Discussion challenges cover SLAs, URL state, debouncing, and component design.</p>
             </article>
           </div>
         </div>
@@ -195,11 +233,12 @@
         <div class="container run-grid">
           <div>
             <p class="section-kicker">Prototype</p>
-            <h2 id="run-title">Run the LiveKit agent locally</h2>
+            <h2 id="run-title">Run the local web interview room</h2>
             <p>
               The landing page is plain HTML and CSS for GitHub Pages. The
-              interview agent remains a Python prototype powered by uv and the
-              LiveKit Agents runtime.
+              working interview prototype is a Python app powered by uv,
+              LiveKit Agents, LiveKit Cloud, and a local browser room. Run the
+              agent and web app in separate terminals, then open the local page.
             </p>
           </div>
 
@@ -211,7 +250,17 @@
             </div>
             <pre><code>cp .env.example .env.local
 uv sync
-uv run python src/agent.py console
+
+# Terminal 1
+uv run python src/agent.py dev
+
+# Terminal 2
+uv run python src/web_app.py
+
+# Browser
+open http://localhost:8765
+
+# Checks
 uv run pytest</code></pre>
           </div>
         </div>
