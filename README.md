@@ -68,12 +68,12 @@ uv run pytest
 
 This repository also includes a static landing page for GitHub Pages:
 
-- `index.html`
-- `styles.css`
-- `assets/interviewroom-hero.png`
+- `docs/index.html`
+- `docs/styles.css`
+- `docs/assets/interviewroom-hero.png`
 
 To publish it, enable GitHub Pages for the repository branch and choose the
-repository root as the Pages source. No frontend build step is required.
+`/docs` folder as the Pages source. No frontend build step is required.
 
 ### Challenge Selection
 
