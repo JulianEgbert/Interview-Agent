@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="InterviewRoom">
+  <defs>
+    <linearGradient id="mark" x1="10" y1="8" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f9f9a"/>
+      <stop offset="1" stop-color="#3569a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#mark)"/>
+  <rect x="12" y="14" width="40" height="36" rx="7" fill="#ffffff" opacity=".96"/>
+  <rect x="12" y="14" width="40" height="10" rx="7" fill="#102026"/>
+  <circle cx="19" cy="19" r="2" fill="#f36f5f"/>
+  <circle cx="26" cy="19" r="2" fill="#f4b641"/>
+  <circle cx="33" cy="19" r="2" fill="#74ddd6"/>
+  <path
+    d="m27 31-7 5 7 5M37 31l7 5-7 5M34 29l-5 14"
+    fill="none"
+    stroke="#102026"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="4"
+  />
+  <rect x="39" y="45" width="8" height="3" rx="1.5" fill="#f36f5f"/>
+</svg>
