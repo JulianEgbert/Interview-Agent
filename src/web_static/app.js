@@ -18,14 +18,37 @@ const workspaceLinks = document.querySelector("#workspaceLinks");
 const participantsEl = document.querySelector("#participants");
 const audioTracks = document.querySelector("#audioTracks");
 const roomSummary = document.querySelector("#roomSummary");
+const refreshEvaluationButton = document.querySelector("#refreshEvaluationButton");
+const evaluationStatus = document.querySelector("#evaluationStatus");
+const evaluationContent = document.querySelector("#evaluationContent");
 
 let room = null;
 let activeSession = null;
+let lastChallengeId = null;
 let challengeCatalog = [];
 
 function setStatus(message, isError = false) {
   statusEl.textContent = message;
   statusEl.classList.toggle("error", isError);
+}
+
+async function readJsonResponse(response, fallbackMessage) {
+  const body = await response.text();
+  let payload = null;
+
+  try {
+    payload = body ? JSON.parse(body) : {};
+  } catch {
+    const status = `${response.status} ${response.statusText}`.trim();
+    const detail = body ? ` (${body})` : "";
+    throw new Error(`${fallbackMessage}: server returned ${status}${detail}`);
+  }
+
+  if (!response.ok) {
+    throw new Error(payload.error || payload.message || fallbackMessage);
+  }
+
+  return payload;
 }
 
 function renderChallenge(challenge) {
@@ -92,6 +115,11 @@ function renderWorkspaceLinks(workspace) {
   });
 }
 
+function setEvaluationStatus(message, isError = false) {
+  evaluationStatus.textContent = message;
+  evaluationStatus.classList.toggle("error", isError);
+}
+
 function renderRoomSummary() {
   if (!activeSession) {
     roomSummary.textContent = "No active room.";
@@ -128,9 +156,137 @@ function detachAudioTrack(track) {
   track.detach().forEach((element) => element.remove());
 }
 
+function createScoreBar(score) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "score-bar";
+
+  const label = document.createElement("div");
+  label.className = "score-label";
+  label.textContent = score?.scoreLabel || "Not scored";
+
+  const track = document.createElement("div");
+  track.className = "score-track";
+
+  const fill = document.createElement("div");
+  fill.className = "score-fill";
+  fill.style.width = `${Math.max(0, Math.min(100, score?.percent || 0))}%`;
+  track.appendChild(fill);
+
+  wrapper.append(label, track);
+  return wrapper;
+}
+
+function createFeedbackCard(title, body) {
+  const card = document.createElement("article");
+  card.className = "feedback-card";
+
+  const heading = document.createElement("h3");
+  heading.textContent = title;
+
+  const text = document.createElement("p");
+  text.textContent = body || "Not noted.";
+
+  card.append(heading, text);
+  return card;
+}
+
+function renderEvaluation(payload) {
+  evaluationContent.innerHTML = "";
+
+  if (!payload.available) {
+    evaluationContent.className = "evaluation-content empty";
+    const empty = document.createElement("p");
+    empty.textContent = payload.message || "No evaluation report has been written yet.";
+    evaluationContent.appendChild(empty);
+    setEvaluationStatus("Evaluation is not available yet.");
+    return;
+  }
+
+  evaluationContent.className = "evaluation-content";
+  setEvaluationStatus(`Loaded ${payload.title}.`);
+
+  const overview = document.createElement("div");
+  overview.className = "score-overview";
+
+  const scoreNumber = document.createElement("div");
+  scoreNumber.className = "score-number";
+  scoreNumber.textContent =
+    payload.overallScore?.score == null
+      ? "--"
+      : `${payload.overallScore.score}/${payload.overallScore.maximum}`;
+
+  const scoreCopy = document.createElement("div");
+  const scoreTitle = document.createElement("h3");
+  scoreTitle.textContent = "Overall score";
+  const scoreMeta = document.createElement("p");
+  scoreMeta.textContent = [
+    payload.metadata?.Difficulty,
+    payload.metadata?.Type,
+  ].filter(Boolean).join(" · ");
+  scoreCopy.append(scoreTitle, scoreMeta, createScoreBar(payload.overallScore));
+  overview.append(scoreNumber, scoreCopy);
+
+  const rubricGrid = document.createElement("div");
+  rubricGrid.className = "rubric-grid";
+  (payload.rubric || []).forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "rubric-row";
+    const label = document.createElement("span");
+    label.textContent = item.label;
+    row.append(label, createScoreBar(item));
+    rubricGrid.appendChild(row);
+  });
+
+  const testCard = document.createElement("article");
+  testCard.className = "test-result-card";
+  const testTitle = document.createElement("h3");
+  testTitle.textContent = "Local test result";
+  const testResult = document.createElement("pre");
+  testResult.textContent = payload.testResult || "No local test result was recorded.";
+  testCard.append(testTitle, testResult);
+
+  const feedbackGrid = document.createElement("div");
+  feedbackGrid.className = "feedback-grid";
+  feedbackGrid.append(
+    createFeedbackCard("What went well", payload.sections?.whatWentWell),
+    createFeedbackCard("What to improve", payload.sections?.whatToImprove),
+    createFeedbackCard("Notable moments", payload.sections?.notableMoments),
+    createFeedbackCard("Next steps", payload.sections?.recommendedNextSteps),
+  );
+
+  evaluationContent.append(overview, rubricGrid, testCard, feedbackGrid);
+}
+
+async function loadEvaluation() {
+  const challengeId = activeSession?.challenge?.id || lastChallengeId;
+  if (!challengeId) {
+    renderEvaluation({
+      available: false,
+      message: "Start an interview before loading an evaluation.",
+    });
+    return;
+  }
+
+  setEvaluationStatus("Checking for evaluation report...");
+  try {
+    const response = await fetch(
+      `/api/evaluation/${encodeURIComponent(challengeId)}`,
+    );
+    const payload = await readJsonResponse(response, "Could not load evaluation");
+    renderEvaluation(payload);
+  } catch (error) {
+    console.error(error);
+    evaluationContent.innerHTML = "";
+    const message = error.message.includes("404") && error.message.includes("Not found")
+      ? "Evaluation endpoint was not found. Restart the local web server so the updated API is active."
+      : error.message;
+    setEvaluationStatus(message, true);
+  }
+}
+
 async function loadChallenges() {
   const response = await fetch("/api/challenges");
-  const payload = await response.json();
+  const payload = await readJsonResponse(response, "Could not load challenges");
   challengeCatalog = payload.challenges;
   challengeSelect.innerHTML = "";
 
@@ -168,12 +324,14 @@ async function startInterview() {
         participantName: participantName.value,
       }),
     });
-    const payload = await response.json();
-    if (!response.ok) throw new Error(payload.error || "Could not start session.");
+    const payload = await readJsonResponse(response, "Could not start session");
 
     activeSession = payload;
+    lastChallengeId = payload.challenge.id;
     renderChallenge(payload.challenge);
     renderWorkspaceLinks(payload.workspace);
+    refreshEvaluationButton.disabled = false;
+    loadEvaluation();
 
     room = new Room({ adaptiveStream: true, dynacast: true });
     room.on(RoomEvent.ParticipantConnected, renderParticipants);
@@ -225,6 +383,7 @@ async function toggleMic() {
 connectButton.addEventListener("click", startInterview);
 disconnectButton.addEventListener("click", leaveInterview);
 micButton.addEventListener("click", toggleMic);
+refreshEvaluationButton.addEventListener("click", loadEvaluation);
 
 loadChallenges().catch((error) => {
   console.error(error);

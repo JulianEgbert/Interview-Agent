@@ -61,6 +61,20 @@
         <div id="participants" class="participants"></div>
         <div id="audioTracks" class="audio-tracks"></div>
       </section>
+
+      <section class="panel evaluation-panel">
+        <div class="evaluation-header">
+          <div>
+            <p class="eyebrow">Evaluation</p>
+            <h2>Visual scorecard</h2>
+          </div>
+          <button id="refreshEvaluationButton" type="button" disabled>Refresh</button>
+        </div>
+        <p id="evaluationStatus" class="evaluation-status">
+          Start an interview, then ask the agent to write an evaluation report.
+        </p>
+        <div id="evaluationContent" class="evaluation-content"></div>
+      </section>
     </main>
 
     <script type="module" src="/app.js"></script>
