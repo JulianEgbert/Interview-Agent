@@ -11,6 +11,8 @@ This repo now contains a first LiveKit Agents prototype for the hackathon:
 - `src/agent.py`: LiveKit voice agent entrypoint.
 - `src/interview.py`: InterviewRoom prompt, opening message, and rubric.
 - `src/challenges.py` and `src/challenges/local.json`: Local challenge catalog and selector.
+- `src/coding_workspace.py`: Local Python workspace setup, code inspection, and test runner.
+- `candidate_workspace/`: Generated local coding folders for candidate solutions.
 - `tests/test_interview.py`: Fast local tests for the prototype behavior.
 - `Dockerfile`: Starter deployment container from the LiveKit Python agent template.
 
@@ -91,7 +93,33 @@ Supported filters are:
 
 ### Current Scope
 
-This prototype supports realtime voice through LiveKit and gives the candidate screen-sharing instructions, but it does not yet analyze screen pixels or editor state. For the hackathon demo, the candidate should narrate their code or describe important changes while screen sharing. A web frontend and screen-aware code review are the natural next steps.
+This prototype supports realtime voice through LiveKit and gives the candidate screen-sharing instructions. For coding challenges with local test specs, it also creates a local `candidate_workspace/<challenge-id>/solution.py` file. The interviewer can inspect that file and run local tests when the candidate asks for a check or reaches a debugging checkpoint.
+
+It does not yet stream live editor state from a web frontend or analyze screen pixels. A browser-based editor with LiveKit data events is the natural next step.
+
+### Local Coding Loop
+
+For the most coding-focused demo, force a coding challenge:
+
+```bash
+INTERVIEWROOM_CHALLENGE_ID=minimum-meeting-rooms uv run python src/agent.py console
+```
+
+The agent creates:
+
+```text
+candidate_workspace/minimum-meeting-rooms/solution.py
+```
+
+Edit that file while talking through your approach. Then say something like:
+
+> I have an implementation. Can you check it?
+
+or:
+
+> Can you run the tests?
+
+The agent can read the current solution and run the local challenge tests, then respond as an interviewer without giving away the full answer.
 
 ## Problem
 

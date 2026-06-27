@@ -17,6 +17,10 @@ build/
 .venv/
 venv/
 
+# Candidate coding scratchpads
+candidate_workspace/*/
+!candidate_workspace/README.md
+
 # Editor, OS, and local assistant state
 .DS_Store
 .idea/

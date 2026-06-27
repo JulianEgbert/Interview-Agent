@@ -6,6 +6,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 CATALOG_PATH = Path(__file__).with_name("challenges") / "local.json"
+CODING_SPEC_PATH = Path(__file__).with_name("challenges") / "coding_specs.json"
 
 
 class InterviewChallenge(BaseModel):
@@ -33,6 +34,34 @@ class ChallengeCatalog(BaseModel):
     challenges: tuple[InterviewChallenge, ...]
 
 
+class CodingTestCase(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    name: str
+    args: tuple[Any, ...] = ()
+    kwargs: dict[str, Any] = Field(default_factory=dict)
+    expected: Any
+
+
+class CodingSpec(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    challenge_id: str
+    language: str = "python"
+    function_name: str
+    starter_code: str
+    test_cases: tuple[CodingTestCase, ...]
+    timeout_seconds: float = 2.0
+
+
+class CodingSpecCatalog(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    version: int
+    description: str
+    specs: tuple[CodingSpec, ...]
+
+
 def challenge_from_mapping(data: dict[str, Any]) -> InterviewChallenge:
     return InterviewChallenge.model_validate(data)
 
@@ -40,6 +69,22 @@ def challenge_from_mapping(data: dict[str, Any]) -> InterviewChallenge:
 def load_challenges(path: Path = CATALOG_PATH) -> tuple[InterviewChallenge, ...]:
     catalog = ChallengeCatalog.model_validate_json(path.read_text(encoding="utf-8"))
     return catalog.challenges
+
+
+def load_coding_specs(path: Path = CODING_SPEC_PATH) -> tuple[CodingSpec, ...]:
+    catalog = CodingSpecCatalog.model_validate_json(path.read_text(encoding="utf-8"))
+    return catalog.specs
+
+
+def get_coding_spec(
+    challenge_id: str,
+    specs: tuple[CodingSpec, ...] | None = None,
+) -> CodingSpec | None:
+    coding_specs = specs or load_coding_specs()
+    for spec in coding_specs:
+        if spec.challenge_id == challenge_id:
+            return spec
+    return None
 
 
 def get_challenge(
